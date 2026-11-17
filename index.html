@@ -11,7 +11,7 @@
   --pink:#efc2cf; --pink-deep:#d98da3; --pink-ink:#171615; --grid:#c4c1bc; --grid-line:#6d6a66; --block:#2b2927;
   --ok:#2c6c4c; --ok-soft:#dcebe1; --warn:#86560f; --warn-soft:#f4e7cc;
   --label:#efe8d6; --label-ink:#3b3732; --wood:#2a1d17;
-  --b-dictionnaire:#e0d8c2; --b-mot:#8e957a; --b-revision:#7d84a7; --b-jeux:#b03a35; --b-journal:#a55b3d; --b-stats:#6d7767;
+  --b-dictionnaire:#e0d8c2; --b-mot:#8e957a; --b-revision:#7d84a7; --b-jeux:#b03a35; --b-journal:#a55b3d; --b-stats:#6d7767; --b-phrases:#c4909a;
   --font-display:"Playfair Display","Libre Caslon Text",Georgia,"Times New Roman",serif;
   --font-body:"Work Sans","Helvetica Neue",Arial,system-ui,sans-serif;
 }
@@ -24,7 +24,7 @@
     --pink:#e7b4c3; --pink-deep:#c9788f; --pink-ink:#171615; --grid:#4b4845; --grid-line:#8b8781; --block:#0f0e0d;
     --ok:#82cda2; --ok-soft:#1d3a2b; --warn:#e7ba68; --warn-soft:#3f3013;
     --label:#e6dfcc; --label-ink:#2f2c28; --wood:#0d0907;
-    --b-dictionnaire:#cfc7b1; --b-mot:#7f866c; --b-revision:#6f7698; --b-jeux:#9d342f; --b-journal:#935136; --b-stats:#60695b;
+    --b-dictionnaire:#cfc7b1; --b-mot:#7f866c; --b-revision:#6f7698; --b-jeux:#9d342f; --b-journal:#935136; --b-stats:#60695b; --b-phrases:#a9737e;
     color-scheme:dark;
   }
 }
@@ -36,11 +36,11 @@
   --pink:#e7b4c3; --pink-deep:#c9788f; --pink-ink:#171615; --grid:#4b4845; --grid-line:#8b8781; --block:#0f0e0d;
   --ok:#82cda2; --ok-soft:#1d3a2b; --warn:#e7ba68; --warn-soft:#3f3013;
   --label:#e6dfcc; --label-ink:#2f2c28; --wood:#0d0907;
-  --b-dictionnaire:#cfc7b1; --b-mot:#7f866c; --b-revision:#6f7698; --b-jeux:#9d342f; --b-journal:#935136; --b-stats:#60695b;
+  --b-dictionnaire:#cfc7b1; --b-mot:#7f866c; --b-revision:#6f7698; --b-jeux:#9d342f; --b-journal:#935136; --b-stats:#60695b; --b-phrases:#a9737e;
   color-scheme:dark;
 }
 .b-dictionnaire{--c:var(--b-dictionnaire)} .b-mot{--c:var(--b-mot)} .b-revision{--c:var(--b-revision)}
-.b-jeux{--c:var(--b-jeux)} .b-journal{--c:var(--b-journal)} .b-stats{--c:var(--b-stats)}
+.b-jeux{--c:var(--b-jeux)} .b-journal{--c:var(--b-journal)} .b-stats{--c:var(--b-stats)} .b-phrases{--c:var(--b-phrases)}
 *{box-sizing:border-box}
 body{margin:0;background:var(--wall);color:var(--ink);font:400 1rem/1.5 var(--font-body);-webkit-text-size-adjust:100%}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--wall)}
@@ -309,6 +309,30 @@ tbody th{font-weight:600}
 .conn{border-top:1px solid var(--rule);padding-top:.7rem;display:flex;flex-direction:column;gap:.35rem}
 .conn-chip{display:inline-block;background:var(--pink);color:var(--pink-ink);padding:.05rem .5rem;font-weight:600;margin:0 .3rem .3rem 0}
 .rate.primary .small{color:inherit}
+/* guide de conversation */
+.seg{display:inline-flex;border:1.5px solid var(--ink)}
+.seg button{border:0;background:none;color:var(--ink);font:600 .78rem var(--font-body);letter-spacing:.1em;text-transform:uppercase;padding:.45rem .9rem;cursor:pointer}
+.seg button[aria-selected="true"]{background:var(--ink);color:var(--on-accent)}
+.sc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(14rem,1fr));gap:.6rem}
+.sc-card{display:flex;flex-direction:column;align-items:flex-start;gap:.15rem;text-align:left;background:var(--field);border:1px solid var(--rule-strong);border-left:6px solid var(--b-phrases);border-radius:0;padding:.75rem .9rem;cursor:pointer;color:var(--ink);font:inherit}
+.sc-card:hover{border-color:var(--ink);border-left-color:var(--b-phrases)}
+.sc-title{font:700 1.15rem/1.2 var(--font-display)}
+.sc-sub{font-size:.85rem;color:var(--ink-soft)}
+.sc-meta{font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin-top:.35rem}
+.sc-bar{width:100%;height:4px;background:var(--rule);margin-top:.2rem}.sc-bar i{display:block;height:100%;background:var(--ok)}
+.sc-h{font-size:1.6rem}
+.phr-list{list-style:none;margin:0;padding:0;border-top:1px solid var(--rule-strong)}
+.phr{display:flex;align-items:flex-start;gap:.5rem;padding:.7rem 0;border-bottom:1px solid var(--rule)}
+.phr-text{flex:1;min-width:0;display:flex;flex-direction:column;gap:.15rem}
+.phr-fr{font:600 1.08rem/1.45 var(--font-body);overflow-wrap:anywhere}
+.phr-en{color:var(--ink-soft);font-size:.92rem}
+.phr-meta{display:flex;flex-wrap:wrap;align-items:center;gap:.2rem .4rem;margin-top:.15rem}
+.phr .dict-mark::after{content:"✓"}
+.phr-big{font:700 clamp(1.25rem,4.6vw,1.7rem)/1.3 var(--font-display);max-width:34rem;overflow-wrap:anywhere}
+#pbAdd summary{cursor:pointer;font-weight:600}
+.w-miss{background:var(--pink);color:var(--pink-ink);padding:0 .1rem}
+.w-acc{text-decoration:underline wavy var(--warn);text-underline-offset:4px}
+.w-extra{text-decoration:line-through;color:var(--fem)}
 
 </style>
 <div class="app">
@@ -327,13 +351,13 @@ tbody th{font-weight:600}
       <h1 class="defword">bibliothèque</h1>
       <p class="defgram"><b>[nom féminin]</b></p>
       <hr>
-      <ol class="senses"><li>Six livres pour apprendre le français, un par activité.</li><li>Choisis-en un : il sort de la pile et s'ouvre.</li></ol>
+      <ol class="senses"><li>Sept livres pour apprendre le français, un par activité.</li><li>Choisis-en un : il sort de la pile et s'ouvre.</li></ol>
     </article>
     <div class="pile">
       <div class="stack" id="stack"></div>
       <div class="wood"></div>
     </div>
-    <p class="small muted">Au clavier : <kbd>1</kbd> à <kbd>6</kbd> pour ouvrir un livre.</p>
+    <p class="small muted">Au clavier : <kbd>1</kbd> à <kbd>7</kbd> pour ouvrir un livre.</p>
   </section>
 
   <nav class="shelf" id="shelf" aria-label="Livres" hidden>
@@ -376,6 +400,7 @@ tbody th{font-weight:600}
         <p class="small muted">Raccourcis : <kbd>N</kbd> nouveau mot · <kbd>/</kbd> rechercher · <kbd>Entrée</kbd> enregistrer · <kbd>Échap</kbd> annuler</p>
       </section>
       <section class="view" id="view-mot" hidden></section>
+      <section class="view" id="view-phrases" hidden></section>
       <section class="view" id="view-revision" hidden></section>
       <section class="view" id="view-jeux" hidden></section>
       <section class="view" id="view-journal" hidden></section>
@@ -419,7 +444,7 @@ function toast(msg, ms = 2600) {
 const TYPES = ['nom', 'verbe', 'adjectif', 'adverbe', 'expression', 'préposition', 'conjonction', 'pronom', 'interjection', 'autre'];
 const GENRES = [['', '—'], ['m', 'masculin'], ['f', 'féminin'], ['m/f', 'masculin et féminin']];
 const REGISTRES = ['courant', 'familier', 'soutenu'];
-const SOURCES = ['journal', 'podcast', 'cours', 'mot du jour', 'jeux', 'conversation', 'lecture', 'autre'];
+const SOURCES = ['journal', 'podcast', 'cours', 'mot du jour', 'jeux', 'phrases', 'conversation', 'lecture', 'autre'];
 const THEMES = ['voyage', 'vie quotidienne', 'technique/ingénierie', 'émotions', 'travail', 'nourriture', 'études', 'santé', 'culture', 'nature', 'société'];
 const NIVEAUX = ['A1', 'A2', 'B1', 'B2', 'C1'];
 const STATUTS = ['nouveau', 'en cours', 'acquis'];
@@ -429,7 +454,8 @@ const gClass = e => e.type === 'nom' && e.genre === 'm' ? 'g-m' : e.type === 'no
 
 /* ===== état + stockage ===== */
 const LS_KEY = 'monfrancais.v1';
-const blank = () => ({ entries: {}, deleted: {}, meta: { motHistory: [], mots: {} }, days: {}, journal: {} });
+const blankPhrases = () => ({ custom: {}, stats: {}, gone: {} });
+const blank = () => ({ entries: {}, deleted: {}, meta: { motHistory: [], mots: {} }, days: {}, journal: {}, phrases: blankPhrases() });
 let S = blank();
 const SHARD = 100;
 
@@ -438,6 +464,7 @@ const Store = {
   loadLocal() {
     try { const raw = localStorage.getItem(LS_KEY); if (raw) S = Object.assign(blank(), JSON.parse(raw)); } catch (e) { this.localOk = false; }
     S.meta = Object.assign({ motHistory: [], mots: {} }, S.meta);
+    S.phrases = Object.assign(blankPhrases(), S.phrases);
   },
   saveLocal() {
     clearTimeout(this._lt);
@@ -448,8 +475,9 @@ const Store = {
   touchDay(k) { this.touch('days-' + k.slice(0, 4)); },
   touchJournal(k) { this.touch('journal-' + k.slice(0, 7)); },
   touchMeta() { this.touch('meta'); },
+  touchPhrases() { this.touch('phrases'); },
   touchAll() {
-    const ids = new Set(['meta']);
+    const ids = new Set(['meta', 'phrases']);
     Object.values(S.entries).forEach(e => ids.add('e-' + e.sh));
     Object.keys(S.days).forEach(k => ids.add('days-' + k.slice(0, 4)));
     Object.keys(S.journal).forEach(k => ids.add('journal-' + k.slice(0, 7)));
@@ -463,6 +491,7 @@ const Store = {
   buildDoc(id) {
     const pick = (obj, prefix) => Object.fromEntries(Object.entries(obj).filter(([k]) => k.startsWith(prefix)));
     if (id === 'meta') return { meta: S.meta, deleted: S.deleted };
+    if (id === 'phrases') return S.phrases;
     if (id.startsWith('days-')) return { days: pick(S.days, id.slice(5)) };
     if (id.startsWith('journal-')) return { entries: pick(S.journal, id.slice(8)) };
     const n = +id.slice(2);
@@ -508,6 +537,7 @@ const Store = {
     for (const d of docs) {
       if (!d.exists) continue; const data = clone(d.data() || {}); cloudIds.add(d.id);
       if (d.id === 'meta') { C.meta = Object.assign(C.meta, data.meta); C.deleted = data.deleted || {}; }
+      else if (d.id === 'phrases') C.phrases = Object.assign(blankPhrases(), data);
       else if (d.id.startsWith('days-')) Object.assign(C.days, data.days);
       else if (d.id.startsWith('journal-')) Object.assign(C.journal, data.entries);
       else if (d.id.startsWith('e-')) for (const [id, e] of Object.entries(data.entries || {})) { e.sh = +d.id.slice(2); C.entries[id] = e; }
@@ -538,6 +568,7 @@ const Store = {
     newer(S.days, C.days, k => this.dirty.add('days-' + k.slice(0, 4)));
     newer(S.journal, C.journal, k => this.dirty.add('journal-' + k.slice(0, 7)));
     if (metaDirty) this.dirty.add('meta');
+    if (mergePhrases(S.phrases, C.phrases)) this.dirty.add('phrases');
   }
 };
 function setSync(status, msg) {
@@ -553,7 +584,7 @@ function setSync(status, msg) {
 function dayRec(k = today()) { return S.days[k] || (S.days[k] = { games: {}, reviews: 0, added: 0 }); }
 function bump(field, n = 1) { const d = dayRec(); d[field] = (d[field] || 0) + n; d.u = Date.now(); Store.touchDay(today()); updateHeader(); }
 function setDay(fn) { const d = dayRec(); fn(d); d.u = Date.now(); Store.touchDay(today()); updateHeader(); }
-const isActive = k => { const d = S.days[k]; return !!d && !!(d.added || d.reviews || d.journal || (d.games && Object.values(d.games).some(g => g && g.done))); };
+const isActive = k => { const d = S.days[k]; return !!d && !!(d.added || d.reviews || d.journal || d.phrases || (d.games && Object.values(d.games).some(g => g && g.done))); };
 function streak() { let n = 0, k = today(); if (!isActive(k)) k = addDays(k, -1); while (isActive(k)) { n++; k = addDays(k, -1); } return n; }
 
 /* ===== fiches ===== */
@@ -594,6 +625,17 @@ const dueEntries = () => entriesArr().filter(e => !e.srs || !e.srs.due || e.srs.
 const weakScore = e => ((e.srs && e.srs.lapses) || 0) + (e.miss || 0);
 const isWeak = e => weakScore(e) >= 2;
 function noteMiss(e) { if (e && e.id && S.entries[e.id]) updateEntry(e.id, { miss: (e.miss || 0) + 1 }); }
+/* fusionne les phrases d'une autre source (nuage ou sauvegarde) dans L ; renvoie true si L contient des changements à renvoyer */
+function mergePhrases(L, R) {
+  R = Object.assign(blankPhrases(), R); let localNewer = false;
+  for (const [id, t] of Object.entries(R.gone)) if (!(L.gone[id] >= t)) L.gone[id] = t;
+  for (const [id, c] of Object.entries(R.custom)) { const l = L.custom[id]; if (!l || (c.u || 0) >= (l.u || 0)) L.custom[id] = c; else localNewer = true; }
+  for (const [id, l] of Object.entries(L.custom)) { if (L.gone[id] >= (l.u || 0)) delete L.custom[id]; else if (!R.custom[id]) localNewer = true; }
+  for (const [k, c] of Object.entries(R.stats)) { const l = L.stats[k]; if (!l || (c.u || 0) >= (l.u || 0)) L.stats[k] = c; else localNewer = true; }
+  for (const k of Object.keys(L.stats)) if (!R.stats[k]) localNewer = true;
+  if (Object.keys(L.gone).length !== Object.keys(R.gone).length) localNewer = true;
+  return localNewer;
+}
 
 ;
 /* ===== voix : uniquement celle du navigateur ===== */
@@ -627,6 +669,7 @@ const Speech = {
 const BOOKS = [
   ['dictionnaire', 'Dictionnaire', 'nom masculin', 'Tous les mots que tu as appris, classés et annotés.'],
   ['mot', 'Mot du jour', 'locution', 'Un mot nouveau chaque matin, ajouté à ton dictionnaire.'],
+  ['phrases', 'Phrases', 'nom féminin pluriel', 'Des phrases toutes faites pour chaque situation, à lire et à tester.'],
   ['revision', 'Révision', 'nom féminin', 'Les cartes à revoir aujourd\'hui, avant de les oublier.'],
   ['jeux', 'Jeux', 'nom masculin pluriel', 'Mots croisés, Le Mot, conjugaison, dictée…'],
   ['journal', 'Journal', 'nom masculin', 'Ton texte du jour, relu avec ton dictionnaire.'],
@@ -669,14 +712,14 @@ function liftBook(btn, id, show) {
 const App = {
   tab: '', busy: false,
   init() {
-    const lay = [[92, -6], [86, 8], [96, 0], [89, -10], [94, 6], [100, 0]];
+    const lay = [[92, -6], [86, 8], [90, -12], [96, 0], [89, -10], [94, 6], [100, 0]];
     $('#stack').innerHTML = BOOKS.map(([id, label], i) => `<button class="book b-${id}" type="button" data-book="${id}" style="--w:${lay[i][0]}%;--x:${lay[i][1]}px"><span class="book-label">${label}</span><span class="book-no" id="no-${id}"></span></button>`).join('');
     $('#minis').innerHTML = BOOKS.map(([id, label]) => `<button class="mini b-${id}" type="button" data-tab="${id}" id="mini-${id}"><span>${label}</span></button>`).join('');
     $('#stack').addEventListener('click', ev => { const b = ev.target.closest('.book'); if (b) this.open(b.dataset.book, b); });
     $('#shelf').addEventListener('click', ev => { const b = ev.target.closest('[data-tab]'); if (b) this.go(b.dataset.tab); });
     window.addEventListener('hashchange', () => this.fromHash());
     document.addEventListener('keydown', ev => {
-      if (this.tab !== '' || this.busy || ev.ctrlKey || ev.metaKey || ev.altKey || !/^[1-6]$/.test(ev.key)) return;
+      if (this.tab !== '' || this.busy || ev.ctrlKey || ev.metaKey || ev.altKey || !/^[1-7]$/.test(ev.key)) return;
       const b = $$('#stack .book')[+ev.key - 1]; if (b) this.open(b.dataset.book, b);
     });
     $('#syncChip').addEventListener('click', () => {
@@ -717,7 +760,8 @@ function updateHeader() {
   const nos = {
     dictionnaire: entriesArr().length, mot: Object.keys(S.meta.mots || {}).length, revision: due,
     jeux: (typeof GAMES !== 'undefined' ? GAMES.filter(([id]) => g[id] && g[id].done).length + '/' + GAMES.length : ''),
-    journal: Object.values(S.journal).filter(j => (j.text || '').trim()).length, stats: n
+    journal: Object.values(S.journal).filter(j => (j.text || '').trim()).length, stats: n,
+    phrases: typeof phrasesOf === 'function' ? phrasesOf().filter(mastered).length + '/' + phrasesOf().length : ''
   };
   for (const [id] of BOOKS) { const el = $('#no-' + id); if (el) el.textContent = nos[id]; }
   const mini = $('#mini-revision span'); if (mini) mini.textContent = 'Révision' + (due ? ' · ' + due : '');
@@ -2862,6 +2906,195 @@ const CW_LEX = (() => {
 })();
 
 ;
+/* ===== Guide de conversation : phrases toutes faites par situation =====
+   « # id|titre|sous-titre » ouvre un scénario ; ensuite une phrase par ligne : français|anglais */
+const PHRASES_RAW=`
+# cafe|Au café et au restaurant|commander, payer, réagir
+Bonjour, je voudrais un café, s'il vous plaît.|Hello, I'd like a coffee, please.
+Est-ce que cette table est libre ?|Is this table free?
+On peut s'asseoir en terrasse ?|Can we sit outside?
+Vous avez une table pour deux ?|Do you have a table for two?
+Qu'est-ce que vous me conseillez ?|What do you recommend?
+Je vais prendre le plat du jour.|I'll have the dish of the day.
+Je suis végétarien, qu'est-ce que vous avez sans viande ?|I'm vegetarian, what do you have without meat?
+Est-ce qu'il y a des noix dans ce plat ?|Are there nuts in this dish?
+Une carafe d'eau, s'il vous plaît.|A jug of tap water, please.
+C'était délicieux, merci.|That was delicious, thank you.
+L'addition, s'il vous plaît.|The bill, please.
+On peut payer séparément ?|Can we pay separately?
+Je peux payer par carte ?|Can I pay by card?
+C'est pour emporter.|It's to take away.
+Excusez-moi, je n'ai pas commandé ça.|Excuse me, I didn't order this.
+# courses|Courses et marché|acheter, demander, comparer
+Je cherche du pain complet.|I'm looking for wholemeal bread.
+C'est combien, le kilo ?|How much is it per kilo?
+Je vais en prendre un demi-kilo.|I'll take half a kilo.
+Vous pouvez me le couper en tranches ?|Can you slice it for me?
+Vous avez un sac, s'il vous plaît ?|Do you have a bag, please?
+Ce sera tout, merci.|That will be all, thank you.
+Où se trouve le rayon des produits laitiers ?|Where is the dairy aisle?
+Ces fraises viennent d'où ?|Where are these strawberries from?
+Vous pouvez me faire goûter ?|Could I have a taste?
+Je peux l'échanger si ça ne va pas ?|Can I exchange it if it doesn't fit?
+Est-ce que je peux l'essayer ?|Can I try it on?
+Vous l'avez dans une autre taille ?|Do you have it in another size?
+C'est un peu trop cher pour moi.|It's a bit too expensive for me.
+Je regarde seulement, merci.|I'm just looking, thanks.
+# transports|Transports et voyage|billets, retards, directions
+Un aller-retour pour Lyon, s'il vous plaît.|A return ticket to Lyon, please.
+À quelle heure part le prochain train ?|What time does the next train leave?
+Le train a combien de retard ?|How late is the train?
+C'est quel quai ?|Which platform is it?
+Il faut changer à Paris ?|Do I have to change in Paris?
+Est-ce que ce bus va au centre-ville ?|Does this bus go to the town centre?
+Vous pouvez me prévenir quand on arrive ?|Can you tell me when we get there?
+Excusez-moi, je crois que c'est ma place.|Excuse me, I think this is my seat.
+Où est-ce que je peux composter mon billet ?|Where can I validate my ticket?
+J'ai raté ma correspondance, qu'est-ce que je dois faire ?|I missed my connection, what should I do?
+Pour aller à la gare, c'est loin à pied ?|Is the station far on foot?
+Vous pouvez me montrer sur le plan ?|Can you show me on the map?
+Mon vol a été annulé.|My flight has been cancelled.
+Ma valise n'est pas arrivée.|My suitcase hasn't arrived.
+# logement|Hôtel et logement|réserver, signaler, demander
+J'ai une réservation au nom de Smith.|I have a booking under the name Smith.
+Le petit-déjeuner est compris ?|Is breakfast included?
+À quelle heure faut-il libérer la chambre ?|What time do we have to check out?
+Je peux laisser mes bagages ici ?|Can I leave my luggage here?
+Le chauffage ne marche pas dans ma chambre.|The heating isn't working in my room.
+Il n'y a plus d'eau chaude.|There's no hot water left.
+Quel est le code du wifi ?|What's the wifi password?
+Le loyer comprend les charges ?|Does the rent include bills?
+Il faut verser une caution ?|Do I have to pay a deposit?
+Quand est-ce que je peux visiter l'appartement ?|When can I view the flat?
+On partage la cuisine avec d'autres colocataires ?|Do we share the kitchen with other flatmates?
+Le propriétaire doit réparer la fuite.|The landlord has to fix the leak.
+# presentation|Se présenter et bavarder|faire connaissance
+Je m'appelle Christine, et toi ?|My name is Christine, and you?
+Je suis en échange universitaire pour un an.|I'm on a university exchange for a year.
+Je fais des études d'ingénieur.|I'm studying engineering.
+Ça fait trois mois que je suis en France.|I've been in France for three months.
+Tu viens d'où ?|Where are you from?
+Qu'est-ce que tu fais dans la vie ?|What do you do for a living?
+Tu fais quoi ce week-end ?|What are you doing this weekend?
+Ça fait longtemps qu'on ne s'est pas vus !|It's been ages since we last saw each other!
+Ravi de faire ta connaissance.|Nice to meet you.
+Excuse-moi, je n'ai pas compris, tu peux répéter ?|Sorry, I didn't understand, can you repeat?
+Tu peux parler un peu plus lentement ?|Can you speak a bit more slowly?
+Comment on dit ça en français ?|How do you say that in French?
+Mon français n'est pas parfait, mais je me débrouille.|My French isn't perfect, but I get by.
+On garde le contact ?|Shall we keep in touch?
+# avis|Donner son avis|opinion, nuance, arguments
+À mon avis, c'est une bonne idée.|In my opinion, it's a good idea.
+Je trouve que ce film est un peu long.|I think this film is a bit long.
+Personnellement, je préfère le train.|Personally, I prefer the train.
+D'après moi, le problème vient d'ailleurs.|As I see it, the problem lies elsewhere.
+J'ai l'impression que les choses changent.|I get the feeling that things are changing.
+Je ne suis pas sûr que ce soit la meilleure solution.|I'm not sure it's the best solution.
+Je ne pense pas qu'il ait raison.|I don't think he's right.
+Il me semble que c'est trop cher.|It seems to me that it's too expensive.
+D'un côté c'est pratique, de l'autre c'est cher.|On the one hand it's practical, on the other it's expensive.
+Ce qui me plaît, c'est l'ambiance.|What I like is the atmosphere.
+Ce qui me dérange, c'est le bruit.|What bothers me is the noise.
+Tout dépend du point de vue.|It all depends on your point of view.
+Pour être honnête, ça ne m'intéresse pas beaucoup.|To be honest, it doesn't interest me much.
+Je n'ai pas vraiment d'avis là-dessus.|I don't really have an opinion on that.
+# accord|Être d'accord ou pas|accord, désaccord, compromis
+Je suis tout à fait d'accord avec toi.|I completely agree with you.
+Tu as raison, je n'y avais pas pensé.|You're right, I hadn't thought of that.
+C'est exactement ce que je pensais.|That's exactly what I was thinking.
+Je ne suis pas du tout d'accord.|I don't agree at all.
+Je vois ce que tu veux dire, mais…|I see what you mean, but…
+C'est vrai, mais il faut aussi tenir compte du prix.|That's true, but we also have to take the price into account.
+Je ne suis pas convaincu.|I'm not convinced.
+Là, je ne te suis pas.|I'm not with you there.
+Ce n'est pas tout à fait ça.|That's not quite it.
+On pourrait trouver un compromis.|We could find a compromise.
+Admettons, mais ça ne règle pas le problème.|Fair enough, but that doesn't solve the problem.
+Disons qu'on est d'accord pour ne pas être d'accord.|Let's agree to disagree.
+# fac|À la fac et en cours|cours, devoirs, administration
+Excusez-moi, c'est bien la salle du cours de thermodynamique ?|Excuse me, is this the room for the thermodynamics class?
+Vous pouvez répéter la consigne, s'il vous plaît ?|Could you repeat the instructions, please?
+Je n'ai pas bien compris la dernière partie.|I didn't quite understand the last part.
+Le devoir est à rendre pour quand ?|When is the assignment due?
+On peut travailler en binôme ?|Can we work in pairs?
+Tu pourrais me passer tes notes ?|Could you lend me your notes?
+L'examen porte sur quels chapitres ?|Which chapters does the exam cover?
+J'ai besoin d'une attestation de scolarité.|I need a certificate of enrolment.
+Où est-ce que je peux imprimer ?|Where can I print?
+Je dois m'inscrire à quel groupe de TD ?|Which tutorial group should I sign up for?
+Je suis désolé, je serai en retard au cours de demain.|I'm sorry, I'll be late for tomorrow's class.
+Est-ce que le cours est enregistré ?|Is the lecture recorded?
+# travail|Au travail et en réunion|réunion, projet, ingénierie
+Je vous propose de faire un point sur l'avancement.|I suggest we review the progress.
+Où en est-on sur le prototype ?|Where are we with the prototype?
+Les essais ont donné de bons résultats.|The tests gave good results.
+On a pris du retard à cause d'un problème de fournisseur.|We've fallen behind because of a supplier problem.
+Il faudrait revoir le dimensionnement.|We should revisit the sizing.
+Est-ce que quelqu'un peut se charger du compte rendu ?|Can someone take care of the minutes?
+Je vous envoie le fichier après la réunion.|I'll send you the file after the meeting.
+On peut fixer une échéance pour la semaine prochaine ?|Can we set a deadline for next week?
+Je n'ai pas encore les données, je reviens vers vous demain.|I don't have the data yet, I'll get back to you tomorrow.
+Pour résumer, il nous reste trois points à régler.|To sum up, we still have three points to settle.
+Je ne suis pas sûr d'avoir bien compris la contrainte.|I'm not sure I've understood the constraint correctly.
+Vous auriez cinq minutes pour en parler ?|Would you have five minutes to discuss it?
+# sante|Chez le médecin et à la pharmacie|symptômes, rendez-vous
+Je voudrais prendre rendez-vous avec un médecin.|I'd like to make an appointment with a doctor.
+J'ai mal à la gorge depuis trois jours.|I've had a sore throat for three days.
+J'ai de la fièvre et je tousse beaucoup.|I have a fever and I'm coughing a lot.
+Je suis allergique à la pénicilline.|I'm allergic to penicillin.
+Je prends déjà un traitement.|I'm already taking medication.
+Il faut une ordonnance pour ce médicament ?|Do I need a prescription for this medicine?
+Vous avez quelque chose contre le mal de tête ?|Do you have something for a headache?
+Combien de fois par jour faut-il le prendre ?|How many times a day should I take it?
+Je me suis fait mal à la cheville.|I've hurt my ankle.
+Je ne me sens pas très bien.|I don't feel very well.
+Où se trouve la pharmacie de garde ?|Where is the on-duty pharmacy?
+# demarches|Banque et démarches|banque, préfecture, papiers
+Je voudrais ouvrir un compte bancaire.|I'd like to open a bank account.
+Quels documents faut-il fournir ?|Which documents do I need to provide?
+J'ai perdu ma carte bancaire, il faut la bloquer.|I've lost my bank card, it needs to be blocked.
+Il me manque un justificatif de domicile.|I'm missing a proof of address.
+Mon titre de séjour expire le mois prochain.|My residence permit expires next month.
+Je dois remplir ce formulaire en ligne ?|Do I have to fill in this form online?
+Combien de temps faut-il pour le traitement du dossier ?|How long does it take to process the application?
+Vous pouvez m'envoyer une confirmation par courriel ?|Can you send me a confirmation by email?
+Je n'ai pas reçu de réponse à ma demande.|I haven't received a reply to my request.
+À quel guichet dois-je m'adresser ?|Which desk should I go to?
+# sorties|Sortir et faire des projets|proposer, accepter, refuser
+Ça te dirait d'aller boire un verre ce soir ?|Would you fancy going for a drink tonight?
+On se retrouve devant le cinéma à huit heures ?|Shall we meet outside the cinema at eight?
+Volontiers, ça me ferait plaisir.|Gladly, I'd love to.
+Désolé, je ne peux pas ce soir, j'ai déjà quelque chose de prévu.|Sorry, I can't tonight, I've already got plans.
+Une autre fois, peut-être ?|Another time, maybe?
+Qu'est-ce que tu as envie de faire ?|What do you feel like doing?
+Ça m'est égal, c'est toi qui choisis.|I don't mind, you choose.
+On réserve ou on y va directement ?|Shall we book or just go?
+Je risque d'être un peu en retard.|I might be a bit late.
+C'était vraiment sympa, on remet ça bientôt !|That was really nice, let's do it again soon!
+# emotions|Réagir et exprimer ses émotions|joie, surprise, déception
+Ça me fait vraiment plaisir !|I'm really pleased!
+Quelle bonne nouvelle !|What great news!
+Je n'en reviens pas !|I can't believe it!
+Ce n'est pas possible !|No way!
+Ça m'énerve quand les gens arrivent en retard.|It annoys me when people turn up late.
+Je suis déçu que tu ne viennes pas.|I'm disappointed you're not coming.
+Ça me rend un peu nerveux.|It makes me a bit nervous.
+J'ai hâte que les vacances commencent.|I can't wait for the holidays to start.
+Je suis désolé pour toi.|I'm sorry to hear that.
+Ne t'inquiète pas, ça va s'arranger.|Don't worry, it'll work out.
+Ça m'a beaucoup touché.|That really touched me.
+J'en ai marre de cette pluie.|I'm fed up with this rain.
+`;
+const SCENARIOS = (() => {
+  const out = []; let cur = null;
+  for (const line of PHRASES_RAW.trim().split('\n')) {
+    if (line.startsWith('# ')) { const [id, title, sub] = line.slice(2).split('|'); cur = { id, title, sub, phrases: [] }; out.push(cur); continue; }
+    const [fr, en] = line.split('|'); if (cur && fr) cur.phrases.push({ fr, en, key: 'b' + hashStr(fr).toString(36), builtIn: true, sc: cur.id });
+  }
+  return out;
+})();
+
+;
 /* ===== Conjugaison : présent, passé composé, imparfait, futur, conditionnel, subjonctif présent ===== */
 const Conj = (() => {
   const IRR = {
@@ -3060,7 +3293,7 @@ function entryDetail(e) {
       ${kv('Révision', e.reviewed ? 'dernière le ' + fmtDate(dayKey(new Date(e.reviewed))) + (e.srs && e.srs.due ? ' · prochaine le ' + fmtDate(e.srs.due) : '') : 'pas encore révisé')}
     </dl>
     ${e.type === 'verbe' && Conj.has(verbBase(e.fr)) ? conjTable(verbBase(e.fr)) : ''}
-    <div class="row"><button class="btn sm" type="button" data-act="edit">Modifier</button><button class="btn sm danger" type="button" data-act="del">Supprimer</button></div>
+    <div class="row"><button class="btn sm" type="button" data-act="edit">Modifier</button><button class="btn sm" type="button" data-act="phrase">Ajouter au guide</button><button class="btn sm danger" type="button" data-act="del">Supprimer</button></div>
   </div>`;
 }
 function conjTable(v) {
@@ -3269,6 +3502,7 @@ function initDict() {
     if (act === 'toggle') { openRows.has(id) ? openRows.delete(id) : openRows.add(id); li.outerHTML = entryRow(e); }
     else if (act === 'fav') { updateEntry(id, { fav: !e.fav }); li.outerHTML = entryRow(e); }
     else if (act === 'edit') editEntry(id);
+    else if (act === 'phrase') openPhraseDraft(e.exemple ? { fr: e.exemple, en: e.exempleEn || '', src: e.id } : { fr: e.fr, en: e.en, src: e.id });
     else if (act === 'del') {
       if (b.dataset.sure) { deleteEntry(id); openRows.delete(id); renderList(); updateHeader(); toast('Fiche supprimée'); }
       else { b.dataset.sure = '1'; b.textContent = 'Confirmer la suppression'; setTimeout(() => { if (b.isConnected) { delete b.dataset.sure; b.textContent = 'Supprimer'; } }, 4000); }
@@ -3348,7 +3582,9 @@ function importData(text, mode) {
   const now = Date.now(); let added = 0, updated = 0, skipped = 0;
   if (mode === 'replace') {
     for (const id of Object.keys(S.entries)) if (!D.entries[id]) S.deleted[id] = now;
-    const keepDeleted = S.deleted; S = Object.assign(blank(), { deleted: keepDeleted }); hayCache.clear();
+    const keepDeleted = S.deleted, gone = Object.assign({}, S.phrases.gone);
+    for (const id of Object.keys(S.phrases.custom)) if (!(D.phrases && D.phrases.custom && D.phrases.custom[id])) gone[id] = now;
+    S = Object.assign(blank(), { deleted: keepDeleted }); S.phrases.gone = gone; hayCache.clear();
   }
   const byKey = new Map(entriesArr().map(e => [wkey(e.fr), e]));
   for (const [id, raw] of Object.entries(D.entries)) {
@@ -3363,6 +3599,7 @@ function importData(text, mode) {
   }
   const mergeMap = (L, R) => { for (const [k, v] of Object.entries(R || {})) if (!L[k] || (v.u || 0) > (L[k].u || 0) || mode === 'replace') L[k] = v; };
   mergeMap(S.days, D.days); mergeMap(S.journal, D.journal);
+  if (D.phrases) mergePhrases(S.phrases, D.phrases);
   if (D.meta) { S.meta.motHistory = [...new Set([...(S.meta.motHistory || []), ...(D.meta.motHistory || [])])]; S.meta.mots = Object.assign({}, D.meta.mots, S.meta.mots); }
   Store.touchAll(); if (mode === 'replace') ['meta'].forEach(i => Store.dirty.add(i));
   return { added, updated, skipped };
@@ -4266,6 +4503,234 @@ function initJournal() {
 }
 
 ;
+/* ===== Guide de conversation : lire et tester ===== */
+const PERSO = { id: 'perso', title: 'Mes phrases', sub: 'tes propres phrases', phrases: [] };
+const pb = { tab: 'lire', sc: null, q: '', draft: null, test: null, setup: { sc: '', mode: 'fr-en' } };
+const allScenarios = () => [...SCENARIOS, PERSO];
+const scTitle = id => (allScenarios().find(s => s.id === id) || PERSO).title;
+function customPhrases(scId) {
+  return Object.values(S.phrases.custom).filter(c => !scId || c.sc === scId).sort((a, b) => (a.u || 0) - (b.u || 0))
+    .map(c => ({ fr: c.fr, en: c.en, sc: c.sc, key: 'c' + c.id, id: c.id, src: c.src, custom: true }));
+}
+function phrasesOf(scId) {
+  if (!scId) return [...SCENARIOS.flatMap(s => s.phrases), ...customPhrases()];
+  const s = SCENARIOS.find(x => x.id === scId);
+  return [...(s ? s.phrases : []), ...customPhrases(scId)];
+}
+const pStat = p => S.phrases.stats[p.key];
+const mastered = p => { const st = pStat(p); return !!st && st.last === 'ok' && st.ok >= 2; };
+const missedLast = p => { const st = pStat(p); return !!st && st.last === 'miss'; };
+function recordPhrase(p, ok) {
+  const st = Object.assign({ ok: 0, miss: 0 }, pStat(p));
+  if (ok) st.ok++; else st.miss++;
+  st.last = ok ? 'ok' : 'miss'; st.u = Date.now();
+  S.phrases.stats[p.key] = st; Store.touchPhrases(); bump('phrases');
+}
+function savePhrase(fr, en, sc, src) {
+  const id = newId();
+  S.phrases.custom[id] = { id, fr: fr.trim(), en: en.trim(), sc: sc || 'perso', src: src || '', u: Date.now() };
+  Store.touchPhrases(); updateHeader(); return id;
+}
+function deletePhrase(id) {
+  delete S.phrases.custom[id]; S.phrases.gone[id] = Date.now();
+  delete S.phrases.stats['c' + id]; Store.touchPhrases(); updateHeader();
+}
+/* ouvre le guide avec le formulaire d'ajout pré-rempli (depuis une fiche du dictionnaire) */
+function openPhraseDraft(d) {
+  pb.tab = 'lire'; pb.test = null; pb.q = ''; pb.sc = pb.sc && pb.sc !== '' ? pb.sc : 'perso'; pb.draft = d;
+  App.go('phrases');
+  const f = $('#pbSc'); if (f) { $('#pbAdd').scrollIntoView({ block: 'center' }); f.focus(); }
+}
+
+/* ----- mots cliquables dans une phrase (même logique que le journal) ----- */
+function linkWords(text) {
+  const toks = analyzeJournal(text); let html = '', pos = 0;
+  for (const t of toks) {
+    html += esc(text.slice(pos, t.i)); pos = t.i + t.t.length;
+    if (t.e) html += `<button type="button" class="jw known ${gClass(t.e)}" data-id="${t.e.id}" title="${esc(t.e.fr)} : ${esc(t.e.en)}">${esc(t.t)}</button>`;
+    else if (t.n.length > 1 && !STOP.has(t.n)) html += `<button type="button" class="jw new" data-w="${esc(t.t)}">${esc(t.t)}</button>`;
+    else html += esc(t.t);
+  }
+  return html + esc(text.slice(pos));
+}
+
+/* ----- comparaison d'une réponse écrite, mot à mot ----- */
+const PTOK = /[\p{L}\p{N}]+(?:['’-][\p{L}\p{N}]+)*['’]?/gu;
+function tokensOf(s) { const out = []; let m; PTOK.lastIndex = 0; while ((m = PTOK.exec(s))) out.push({ raw: m[0].toLowerCase().replace(/’/g, "'"), n: norm(m[0]).replace(/'/g, ''), i: m.index, len: m[0].length }); /* sans apostrophe : « laddition » vaut « l'addition » */ return out; }
+function comparePhrase(given, expected) {
+  const G = tokensOf(given), E = tokensOf(expected), n = E.length, m = G.length;
+  const L = Array.from({ length: n + 1 }, () => new Array(m + 1).fill(0));
+  for (let i = n - 1; i >= 0; i--) for (let j = m - 1; j >= 0; j--) L[i][j] = E[i].n === G[j].n ? L[i + 1][j + 1] + 1 : Math.max(L[i + 1][j], L[i][j + 1]);
+  const eState = new Array(n).fill('miss'), gState = new Array(m).fill('extra');
+  for (let i = 0, j = 0; i < n && j < m;) {
+    if (E[i].n === G[j].n) { const acc = E[i].raw !== G[j].raw; eState[i] = acc ? 'acc' : 'ok'; gState[j] = acc ? 'acc' : 'ok'; i++; j++; }
+    else if (L[i + 1][j] >= L[i][j + 1]) i++; else j++;
+  }
+  const matched = eState.filter(x => x !== 'miss').length;
+  const verdict = !m ? 'vide' : matched === n && gState.every(x => x !== 'extra') ? (eState.includes('acc') ? 'accent' : 'exact') : 'faux';
+  const paint = (text, toks, states) => { let h = '', p = 0; toks.forEach((t, k) => { h += esc(text.slice(p, t.i)) + `<span class="w-${states[k]}">${esc(text.slice(t.i, t.i + t.len))}</span>`; p = t.i + t.len; }); return h + esc(text.slice(p)); };
+  return { verdict, score: n ? matched / n : 0, expHtml: paint(expected, E, eState), givHtml: paint(given, G, gState) };
+}
+
+/* ----- rendu ----- */
+function phraseRow(p) {
+  return `<li class="phr">
+    <button class="icon say" type="button" data-say="${esc(p.fr)}" aria-label="Écouter">🔊</button>
+    <div class="phr-text"><p class="phr-fr" lang="fr">${linkWords(p.fr)}</p><p class="phr-en" lang="en">${esc(p.en) || '<i>traduction à compléter</i>'}</p>
+      ${p.custom ? `<p class="phr-meta"><span class="tag">ma phrase</span>${p.src && S.entries[p.src] ? `<button type="button" class="btn sm ghost" data-entry="${p.src}">fiche « ${esc(S.entries[p.src].fr)} »</button>` : ''}<button type="button" class="btn sm ghost danger" data-del="${p.id}">Supprimer</button></p>` : ''}
+    </div>
+    ${mastered(p) ? '<span class="dict-mark" title="maîtrisée"></span>' : ''}
+  </li>`;
+}
+function scCard(s) {
+  const ps = phrasesOf(s.id), m = ps.filter(mastered).length;
+  return `<button type="button" class="sc-card" data-sc="${s.id}"><span class="sc-title">${esc(s.title)}</span><span class="sc-sub">${esc(s.sub)}</span>
+    <span class="sc-meta">${plural(ps.length, 'phrase')} · ${m} maîtrisée${m > 1 ? 's' : ''}</span><span class="sc-bar"><i style="width:${ps.length ? m / ps.length * 100 : 0}%"></i></span></button>`;
+}
+function addForm(sc) {
+  const d = pb.draft || {};
+  return `<details class="panel" id="pbAdd"${pb.draft ? ' open' : ''}><summary>Ajouter une phrase${d.src && S.entries[d.src] ? ` (depuis la fiche « ${esc(S.entries[d.src].fr)} »)` : ''}</summary>
+    <form id="pbForm" class="view" autocomplete="off" style="margin-top:.8rem">
+      <div class="f"><label for="pbFr">Phrase en français</label><input id="pbFr" lang="fr" spellcheck="false" value="${esc(d.fr || '')}" placeholder="Je voudrais réserver une table pour ce soir."></div>
+      <div class="f"><label for="pbEn">Traduction</label><input id="pbEn" lang="en" value="${esc(d.en || '')}" placeholder="I'd like to book a table for tonight."></div>
+      <div class="f"><label for="pbSc">Scénario</label><select id="pbSc">${allScenarios().map(s => `<option value="${s.id}"${(d.sc || sc) === s.id ? ' selected' : ''}>${esc(s.title)}</option>`).join('')}</select></div>
+      <div class="row"><button class="btn primary" type="submit">Ajouter au guide</button>${pb.draft ? '<button class="btn" type="button" id="pbCancel">Annuler</button>' : ''}</div>
+      <p class="note warn" id="pbMsg" role="status" hidden></p>
+    </form></details>`;
+}
+function renderLire() {
+  if (pb.q.trim()) {
+    const t = norm(pb.q).split(' ').filter(Boolean), hits = phrasesOf().filter(p => { const h = norm(p.fr + ' ' + p.en); return t.every(x => h.includes(x)); });
+    return `<p class="small muted">${plural(hits.length, 'phrase trouvée', 'phrases trouvées')}</p><ul class="phr-list">${hits.map(p => phraseRow(p).replace('<div class="phr-text">', `<div class="phr-text"><p class="eyebrow">${esc(scTitle(p.sc))}</p>`)).join('')}</ul>`;
+  }
+  if (!pb.sc) return `<div class="sc-grid">${allScenarios().map(scCard).join('')}</div>${addForm('perso')}`;
+  const s = allScenarios().find(x => x.id === pb.sc) || PERSO, ps = phrasesOf(s.id);
+  return `<div class="row" style="justify-content:space-between"><button type="button" class="btn sm ghost" id="pbBack">← Tous les scénarios</button>
+      ${ps.length ? `<button type="button" class="btn sm" data-test="${s.id}">Tester ce scénario</button>` : ''}</div>
+    <div><h3 class="sc-h">${esc(s.title)}</h3><p class="small muted">${esc(s.sub)} · touche un mot souligné pour l'ajouter à ton dictionnaire</p></div>
+    ${ps.length ? `<ul class="phr-list">${ps.map(phraseRow).join('')}</ul>` : '<div class="empty"><p>Pas encore de phrase ici. Ajoute les tiennes ci-dessous, ou depuis une fiche du dictionnaire (« Ajouter au guide »).</p></div>'}
+    ${addForm(s.id)}`;
+}
+
+/* ----- test ----- */
+function testPool(sc) { return sc === '_miss' ? phrasesOf().filter(missedLast) : phrasesOf(sc || ''); }
+function startTest(sc, mode, keys) {
+  const pool = keys ? phrasesOf().filter(p => keys.includes(p.key)) : testPool(sc);
+  if (!pool.length) return;
+  const pick = shuffle(pool).sort((a, b) => mastered(a) - mastered(b)).slice(0, 12);   // les phrases pas encore maîtrisées d'abord
+  pb.test = { sc, mode, items: shuffle(pick), i: 0, flipped: false, res: null, results: [] };
+  pb.tab = 'tester'; renderPhrases();
+}
+function renderTester() {
+  const T = pb.test;
+  if (!T) {
+    const opts = [['', 'Tous les scénarios'], ...allScenarios().filter(s => phrasesOf(s.id).length).map(s => [s.id, s.title]), ['_miss', 'Mes phrases ratées']];
+    const pool = testPool(pb.setup.sc), m = pool.filter(mastered).length;
+    return `<div class="panel view">
+      <div class="fields">
+        <div class="f"><label for="ptSc">Scénario</label><select id="ptSc">${opts.map(([v, l]) => `<option value="${v}"${pb.setup.sc === v ? ' selected' : ''}>${esc(l)}</option>`).join('')}</select></div>
+        <div class="f"><label for="ptMode">Mode</label><select id="ptMode">${[['fr-en', 'Cartes : français → anglais'], ['en-fr', 'Cartes : anglais → français'], ['ecrit', 'À l\'écrit : je tape la phrase en français']].map(([v, l]) => `<option value="${v}"${pb.setup.mode === v ? ' selected' : ''}>${l}</option>`).join('')}</select></div>
+      </div>
+      <p class="small muted">${pool.length ? `${plural(pool.length, 'phrase')} · ${m} maîtrisée${m > 1 ? 's' : ''} (juste deux fois, et la dernière fois). Une session prend jusqu'à 12 phrases, les moins sûres d'abord.` : 'Aucune phrase ratée pour l\'instant.'}</p>
+      <div class="row"><button class="btn primary" type="button" id="ptStart"${pool.length ? '' : ' disabled'}>Commencer</button></div></div>`;
+  }
+  if (T.i >= T.items.length) {
+    const ok = T.results.filter(r => r.ok).length, miss = T.results.filter(r => !r.ok).map(r => r.p);
+    return `<div class="panel view"><h3>Terminé : ${ok} sur ${T.items.length}</h3>
+      ${miss.length ? `<p>À revoir :</p><ul class="phr-list">${miss.map(p => `<li class="phr"><button class="icon say" type="button" data-say="${esc(p.fr)}" aria-label="Écouter">🔊</button><div class="phr-text"><p class="phr-fr" lang="fr">${esc(p.fr)}</p><p class="phr-en">${esc(p.en)}</p></div></li>`).join('')}</ul>` : '<p>Sans faute !</p>'}
+      <div class="row">${miss.length ? '<button class="btn primary" type="button" id="ptRetryMiss">Revoir les ratées</button>' : ''}<button class="btn" type="button" id="ptAgain">Nouvelle session</button><button class="btn ghost" type="button" id="ptBack">Changer de scénario</button></div></div>`;
+  }
+  const p = T.items[T.i], head = `<p class="small muted">${T.i + 1} sur ${T.items.length} · ${esc(scTitle(p.sc))}</p>`;
+  const say = `<button class="icon say" type="button" data-say="${esc(p.fr)}" aria-label="Écouter">🔊</button>`;
+  if (T.mode === 'ecrit') {
+    const r = T.res;
+    return head + `<div class="flash"><div class="flash-face"><div class="phr-big" lang="en">${esc(p.en)}</div></div>${r ? `<hr><div class="flash-face"><div class="phr-big" lang="fr">${r.expHtml}</div>${say}</div>` : ''}</div>
+      ${r ? `<p class="note ${r.ok ? 'ok' : 'warn'}" role="status">${r.verdict === 'exact' ? 'Juste.' : r.verdict === 'accent' ? 'Juste, aux accents ou apostrophes près (soulignés).' : r.verdict === 'vide' ? 'Voici la réponse.' : `${Math.round(r.score * 100)} % des mots trouvés. Les mots manquants sont surlignés.`}${r.given ? `<br><span class="small">Ta réponse : <span lang="fr">${r.givHtml}</span></span>` : ''}</p>
+        <div class="row"><button class="btn primary" type="button" id="ptNext">Suivant <kbd>Entrée</kbd></button>${!r.ok && r.given ? '<button class="btn" type="button" id="ptOverride">J\'avais juste</button>' : ''}</div>` :
+        `<form id="ptForm" class="cj-line" autocomplete="off"><label class="sr" for="ptIn">Ta phrase en français</label><input id="ptIn" lang="fr" autocapitalize="sentences" autocorrect="off" spellcheck="false" placeholder="Écris la phrase en français…"><button class="btn primary" type="submit">Valider</button><button class="btn" type="button" id="ptSkip">Je ne sais pas</button></form>`}`;
+  }
+  const front = T.mode === 'fr-en' ? `<div class="phr-big" lang="fr">${esc(p.fr)}</div>${say}` : `<div class="phr-big" lang="en">${esc(p.en)}</div>`;
+  const back = T.mode === 'fr-en' ? `<div class="phr-big" lang="en">${esc(p.en)}</div>` : `<div class="phr-big" lang="fr">${esc(p.fr)}</div>${say}`;
+  return head + `<div class="flash"><div class="flash-face">${front}</div>${T.flipped ? `<hr><div class="flash-face">${back}</div>` : ''}</div>
+    ${T.flipped ? `<div class="g-btns"><button class="btn" type="button" data-know="0">À revoir <kbd>1</kbd></button><button class="btn primary" type="button" data-know="1">Je savais <kbd>2</kbd></button></div>` :
+      `<div class="row"><button class="btn primary" type="button" id="ptFlip">Retourner la carte <kbd>Espace</kbd></button></div>`}`;
+}
+function testAnswer(ok) { const T = pb.test, p = T.items[T.i]; recordPhrase(p, ok); T.results.push({ p, ok }); T.i++; T.flipped = false; T.res = null; renderPhrases(); }
+function testCheck(given) {
+  const T = pb.test, p = T.items[T.i], c = comparePhrase(given, p.fr);
+  T.res = Object.assign(c, { given: given.trim(), ok: c.verdict === 'exact' || c.verdict === 'accent' }); renderPhrases();
+}
+function testNext(override) {
+  const T = pb.test, p = T.items[T.i], ok = override || T.res.ok;
+  recordPhrase(p, ok); T.results.push({ p, ok }); T.i++; T.res = null; renderPhrases();
+}
+
+function renderPhrases(soft) {
+  const v = $('#view-phrases'), a = document.activeElement;
+  if (soft && (pb.test || (a && v.contains(a) && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)))) return;
+  v.innerHTML = `<div class="view-head"><h2>Phrases</h2>
+      <div class="seg" role="tablist"><button type="button" role="tab" data-ptab="lire" aria-selected="${pb.tab === 'lire'}">Lire</button><button type="button" role="tab" data-ptab="tester" aria-selected="${pb.tab === 'tester'}">Tester</button></div></div>
+    ${pb.tab === 'lire' ? `<div><label class="sr" for="pbSearch">Rechercher une phrase</label><input id="pbSearch" type="search" placeholder="Rechercher une phrase, en français ou en anglais…" value="${esc(pb.q)}" autocomplete="off"></div>` : ''}
+    <div id="pbBody" class="view">${pb.tab === 'lire' ? renderLire() : renderTester()}</div>`;
+  const f = $('#ptIn'); if (f) f.focus(); else { const n = $('#ptNext'); if (n) n.focus(); }
+}
+Views.phrases = renderPhrases;
+
+function initPhrases() {
+  const v = $('#view-phrases');
+  v.addEventListener('click', ev => {
+    const t = ev.target.closest('button'); if (!t) return;
+    if (t.dataset.ptab) { pb.tab = t.dataset.ptab; if (pb.tab === 'lire') pb.test = null; renderPhrases(); }
+    else if (t.dataset.sc) { pb.sc = t.dataset.sc; pb.draft = null; renderPhrases(); scrollTo(0, 0); }
+    else if (t.id === 'pbBack') { pb.sc = null; pb.draft = null; renderPhrases(); }
+    else if (t.id === 'pbCancel') { pb.draft = null; renderPhrases(); }
+    else if (t.dataset.test != null) { pb.setup.sc = t.dataset.test; pb.tab = 'tester'; pb.test = null; renderPhrases(); }
+    else if (t.dataset.del) {
+      if (t.dataset.sure) { deletePhrase(t.dataset.del); renderPhrases(); toast('Phrase supprimée'); }
+      else { t.dataset.sure = '1'; t.textContent = 'Confirmer'; setTimeout(() => { if (t.isConnected) { delete t.dataset.sure; t.textContent = 'Supprimer'; } }, 4000); }
+    }
+    else if (t.dataset.entry) { const e = S.entries[t.dataset.entry]; if (e) { resetFilters(); openRows.add(e.id); F.q = e.fr; $('#search').value = e.fr; App.go('dictionnaire'); renderList(); } }
+    else if (t.dataset.id) { const e = S.entries[t.dataset.id]; if (e) { resetFilters(); openRows.add(e.id); F.q = e.fr; $('#search').value = e.fr; App.go('dictionnaire'); renderList(); } }
+    else if (t.dataset.w) { const phr = t.closest('.phr'), ctx = phr ? $('.phr-fr', phr).textContent : ''; App.go('dictionnaire'); startAdd(t.dataset.w.toLowerCase(), { contexte: ctx, source: 'phrases' }); }
+    else if (t.id === 'ptStart') startTest(pb.setup.sc, pb.setup.mode);
+    else if (t.id === 'ptFlip') { pb.test.flipped = true; renderPhrases(); }
+    else if (t.dataset.know) testAnswer(t.dataset.know === '1');
+    else if (t.id === 'ptSkip') testCheck('');
+    else if (t.id === 'ptNext') testNext(false);
+    else if (t.id === 'ptOverride') testNext(true);
+    else if (t.id === 'ptAgain') startTest(pb.test.sc, pb.test.mode);
+    else if (t.id === 'ptRetryMiss') startTest(pb.test.sc, pb.test.mode, pb.test.results.filter(r => !r.ok).map(r => r.p.key));
+    else if (t.id === 'ptBack') { pb.test = null; renderPhrases(); }
+  });
+  v.addEventListener('input', ev => {
+    if (ev.target.id === 'pbSearch') { pb.q = ev.target.value; const b = $('#pbBody'); if (b) b.innerHTML = renderLire(); }
+  });
+  v.addEventListener('change', ev => {
+    if (ev.target.id === 'ptSc') { pb.setup.sc = ev.target.value; renderPhrases(); }
+    else if (ev.target.id === 'ptMode') pb.setup.mode = ev.target.value;
+  });
+  v.addEventListener('submit', ev => {
+    ev.preventDefault();
+    if (ev.target.id === 'ptForm') testCheck($('#ptIn').value);
+    else if (ev.target.id === 'pbForm') {
+      const fr = $('#pbFr').value.trim(), en = $('#pbEn').value.trim(), sc = $('#pbSc').value, msg = $('#pbMsg');
+      if (!fr) { msg.hidden = false; msg.textContent = 'Écris d\'abord la phrase en français.'; $('#pbFr').focus(); return; }
+      const sig = x => tokensOf(x).map(t => t.n).join(' ');
+      if (phrasesOf().some(p => sig(p.fr) === sig(fr))) { msg.hidden = false; msg.textContent = 'Cette phrase est déjà dans le guide.'; return; }
+      savePhrase(fr, en, sc, pb.draft && pb.draft.src); pb.draft = null; pb.sc = sc; renderPhrases();
+      toast(`Phrase ajoutée à « ${scTitle(sc)} »`);
+    }
+  });
+  document.addEventListener('keydown', ev => {
+    if (App.tab !== 'phrases' || !pb.test || ev.ctrlKey || ev.metaKey || ev.altKey || /^(INPUT|TEXTAREA|SELECT)$/.test(ev.target.tagName)) return;
+    const T = pb.test; if (T.i >= T.items.length) return;
+    if (T.mode === 'ecrit') { if (ev.key === 'Enter' && T.res && ev.target.tagName !== 'BUTTON') { ev.preventDefault(); testNext(false); } return; }
+    if ((ev.key === ' ' || ev.key === 'Enter') && !T.flipped) { ev.preventDefault(); T.flipped = true; renderPhrases(); }
+    else if (T.flipped && (ev.key === '1' || ev.key === '2')) { ev.preventDefault(); testAnswer(ev.key === '2'); }
+  });
+}
+
+;
 /* ===== Stats ===== */
 const mondayOf = k => { const d = keyDate(k); d.setDate(d.getDate() - ((d.getDay() + 6) % 7)); return dayKey(d); };
 function renderStats() {
@@ -4317,6 +4782,7 @@ Views.statsBody = renderStats;
   initDaily();
   initGames();
   initJournal();
+  initPhrases();
   Store.connect();
   App.init();
   window.addEventListener('pagehide', () => { try { localStorage.setItem(LS_KEY, JSON.stringify(S)); } catch (e) { } if (Store.dirty.size) Store.flush(); });

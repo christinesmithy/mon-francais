@@ -1,5 +1,5 @@
 /* Mon Français : cache hors ligne. En ligne, la page la plus récente est chargée ; hors ligne, la copie gardée ici. */
-const CACHE = 'mf-d811b876';
+const CACHE = 'mf-591cb665';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './apple-touch-icon.png', './icon-192.png', './icon-512.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
