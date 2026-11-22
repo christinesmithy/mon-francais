@@ -560,7 +560,9 @@ const Store = {
     const hist = [...new Set([...(C.meta.motHistory || []), ...(S.meta.motHistory || [])])];
     const mots = Object.assign({}, S.meta.mots, C.meta.mots);
     if (hist.length !== (C.meta.motHistory || []).length || Object.keys(mots).length !== Object.keys(C.meta.mots || {}).length) metaDirty = true;
-    S.meta = Object.assign({}, S.meta, C.meta, { motHistory: hist, mots });
+    const cwDays = Object.assign({}, S.meta.cwDays, C.meta.cwDays);
+    if (Object.keys(cwDays).length !== Object.keys(C.meta.cwDays || {}).length) metaDirty = true;
+    S.meta = Object.assign({}, S.meta, C.meta, { motHistory: hist, mots, cwDays });
     const newer = (L, R, touch) => {
       for (const [k, c] of Object.entries(R)) { const l = L[k]; if (!l || (c.u || 0) >= (l.u || 0)) L[k] = c; else touch(k); }
       for (const k of Object.keys(L)) if (!R[k]) touch(k);
@@ -3600,7 +3602,7 @@ function importData(text, mode) {
   const mergeMap = (L, R) => { for (const [k, v] of Object.entries(R || {})) if (!L[k] || (v.u || 0) > (L[k].u || 0) || mode === 'replace') L[k] = v; };
   mergeMap(S.days, D.days); mergeMap(S.journal, D.journal);
   if (D.phrases) mergePhrases(S.phrases, D.phrases);
-  if (D.meta) { S.meta.motHistory = [...new Set([...(S.meta.motHistory || []), ...(D.meta.motHistory || [])])]; S.meta.mots = Object.assign({}, D.meta.mots, S.meta.mots); }
+  if (D.meta) { S.meta.motHistory = [...new Set([...(S.meta.motHistory || []), ...(D.meta.motHistory || [])])]; S.meta.mots = Object.assign({}, D.meta.mots, S.meta.mots); S.meta.cwDays = Object.assign({}, D.meta.cwDays, S.meta.cwDays); }
   Store.touchAll(); if (mode === 'replace') ['meta'].forEach(i => Store.dirty.add(i));
   return { added, updated, skipped };
 }
@@ -3900,10 +3902,10 @@ function miniSlots(pat) {
   return { across, down, dmap };
 }
 /* remplit ligne par ligne ; à chaque lettre posée, le début de chaque mot vertical doit rester le début d'un mot du lexique */
-function miniFill(pat, byLen, pref, ownSet, r, ownFirst) {
+function miniFill(pat, byLen, pref, avoid, r) {
   const sl = miniSlots(pat); if (!sl) return null;
   const { across, down, dmap } = sl, cand = {};
-  for (const l of [3, 4, 5]) { const s = shuffle(byLen[l], r); cand[l] = ownFirst ? [...s.filter(w => ownSet.has(w)), ...s.filter(w => !ownSet.has(w))] : s; }
+  for (const l of [3, 4, 5]) { const s = shuffle(byLen[l], r); cand[l] = avoid.size ? [...s.filter(w => !avoid.has(w)), ...s.filter(w => avoid.has(w))] : s; }   // les mots déjà vus récemment en dernier
   const dstr = down.map(() => ''), used = new Set(), chosen = [];
   let nodes = 0, dead = false;
   const rec = i => {
@@ -3954,30 +3956,55 @@ function miniLexicon() {
   for (const k of [...lex.keys()].sort()) { byLen[k.length].push(k); for (let i = 1; i <= k.length; i++) pref.add(k.length + k.slice(0, i)); }
   return { lex, ownSet, byLen, pref };
 }
-function cwGenerate(seed) {
-  const r = rng(seed), L = miniLexicon();
-  for (let t = 0; t < 80; t++) {
+/* construit la grille (cases, numéros) à partir des mots placés */
+function cwGrid(placed) {
+  const cells = new Map();
+  placed.forEach((p, idx) => { for (let k = 0; k < p.a.length; k++) { const key = (p.x + (p.d ? 0 : k)) + ',' + (p.y + (p.d ? k : 0)); const c = cells.get(key) || { ch: p.a[k], d: {} }; c.d[p.d] = idx; cells.set(key, c); } });
+  const starts = [...new Set(placed.map(p => p.y * 100 + p.x))].sort((a, b) => a - b);
+  placed.forEach(p => { p.n = starts.indexOf(p.y * 100 + p.x) + 1; });
+  return { placed, cells, W: 5, H: 5 };
+}
+const cwSig = g => g.placed.map(p => p.a).sort().join(',');
+function cwGenerate(seed, accept, avoid = new Set(), budgetMs = 1500) {
+  const r = rng(seed), L = miniLexicon(), t0 = Date.now();
+  for (let t = 0; t < 80 && Date.now() - t0 < budgetMs; t++) {
     const pat = MINI_PATTERNS[Math.floor(r() * MINI_PATTERNS.length)];
-    const f = miniFill(pat, L.byLen, L.pref, L.ownSet, r, t < 30 && L.ownSet.size > 0);
+    const f = miniFill(pat, L.byLen, L.pref, avoid, r);   // plus de priorité à tes mots : ils faisaient revenir les mêmes grilles
     if (!f) continue;
-    const cells = new Map(), placed = [];
+    const placed = [];
     for (const [d, list] of [[0, f.across], [1, f.down]]) for (const s of list) {
-      const info = L.lex.get(s.w), idx = placed.length;
+      const info = L.lex.get(s.w);
       placed.push({ a: info.a, fr: info.fr, en: info.en || '', clue: info.clue, own: !!info.own, x: s.x, y: s.y, d });
-      for (let k = 0; k < s.len; k++) { const key = (s.x + (d ? 0 : k)) + ',' + (s.y + (d ? k : 0)); const c = cells.get(key) || { ch: info.a[k], d: {} }; c.d[d] = idx; cells.set(key, c); }
     }
-    const g = { placed, cells, W: 5, H: 5 };
-    if (!cwValid(g)) continue;
-    const starts = [...new Set(placed.map(p => p.y * 100 + p.x))].sort((a, b) => a - b);
-    placed.forEach(p => { p.n = starts.indexOf(p.y * 100 + p.x) + 1; });
+    const g = cwGrid(placed);
+    if (!cwValid(g) || (accept && !accept(g))) continue;
     return g;
   }
   return null;
 }
+/* la grille du jour : gardée telle quelle toute la journée, jamais identique à une grille passée ;
+   les mots des 30 dernières grilles ne sont réutilisés qu'en dernier recours */
+function cwForDay(day) {
+  const M = S.meta; M.cwDays = M.cwDays || {};
+  const saved = M.cwDays[day];
+  if (saved && saved.placed) return cwGrid(clone(saved.placed));
+  const past = Object.entries(M.cwDays).filter(([d]) => d !== day);
+  const seen = new Set(past.map(([, v]) => v.sig));
+  const avoid = new Set(past.filter(([d]) => d < day).sort((a, b) => a[0].localeCompare(b[0])).slice(-30).flatMap(([, v]) => v.sig.toLowerCase().split(',')));
+  const fresh = g => !seen.has(cwSig(g));
+  const g = cwGenerate('mini' + day, fresh, avoid) || cwGenerate('mini2' + day, fresh, new Set(), 2500);
+  if (!g) return null;
+  M.cwDays[day] = { sig: cwSig(g), placed: g.placed.map(({ a, fr, en, clue, own, x, y, d }) => ({ a, fr, en, clue, own, x, y, d })) };
+  const keys = Object.keys(M.cwDays).sort(), weekAgo = addDays(day, -7);
+  keys.slice(0, Math.max(0, keys.length - 400)).forEach(k => { delete M.cwDays[k]; });               // empreintes gardées environ un an
+  for (const k of keys) if (k < weekAgo && M.cwDays[k] && M.cwDays[k].placed) M.cwDays[k] = { sig: M.cwDays[k].sig };   // grilles complètes : la dernière semaine seulement
+  Store.touchMeta();
+  return g;
+}
 Game.croises = {
   start() {
     const key = 'cw' + today();
-    this.s = gameCache[key] || (gameCache[key] = { g: cwGenerate('mini' + today()), vals: {}, dir: 0, cur: null, revealed: new Set(), hints: false, done: false, t0: 0, secs: 0 });
+    this.s = gameCache[key] || (gameCache[key] = { g: cwForDay(today()), vals: {}, dir: 0, cur: null, revealed: new Set(), hints: false, done: false, t0: 0, secs: 0 });
     if (this.s.g && !this.s.cur) this.s.cur = this.wordCells(this.order()[0])[0];
     this.render(); clearInterval(this.timer); this.timer = setInterval(() => this.tick(), 1000);
   },
